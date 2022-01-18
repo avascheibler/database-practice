@@ -121,14 +121,26 @@ end
 # 14) get top 10 countries by full country name who have won the most gold medals in descending order
 p "Solution for 14"
 
-p p db.execute("SELECT COUNT ( * ) AS medal, country FROM olympicMedals WHERE medal IS 'Gold' GROUP BY country ORDER BY medal DESC LIMIT 10"
+p p db.execute("SELECT COUNT ( olympicMedals.medal ) AS medal, countryLookup.country_name
+FROM olympicMedals 
+INNER JOIN countryLookup 
+ON olympicMedals.country = countryLookup.code
+WHERE medal IS 'Gold'
+GROUP BY country 
+ORDER BY medal DESC LIMIT 10;"
 ) do |row|
     p row
 end
 
 # 15) get top 10 countries by full country name and population, where the name is not null, that have won the most gold medals in descending order
 p "Solution for 15"
-p p db.execute("SELECT COUNT ( * ) AS medal, country FROM olympicMedals WHERE medal IS 'Gold' AND country IS NOT NULL GROUP BY country ORDER BY medal DESC LIMIT 10"
+p p db.execute("SELECT COUNT ( olympicMedals.medal ) AS medal, countryLookup.country_name, countryLookup.population
+FROM olympicMedals 
+INNER JOIN countryLookup
+ON olympicMedals.country = countryLookup.code
+WHERE medal IS 'Gold' AND country IS NOT null 
+GROUP BY country 
+ORDER BY medal DESC LIMIT 10;"
 ) do |row|
     p row
 end
